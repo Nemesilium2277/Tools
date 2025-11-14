@@ -1,6 +1,0 @@
-mv /root/NemBackup /
-echo "Langs ENTER AJA"
-mysql -u root -p < /NemBackup/database.sql
-tar -xvpzf /NemBackup/panel.tar.gz -C /
-tar -xvpzf /NemBackup/paymenter.tar.gz -C /
-tar -xvzf /NemBackup/node.tar.gz -C /
