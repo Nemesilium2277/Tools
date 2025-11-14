@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+mkdir -p /NemBackup
+cat <<EOF > /root/start
+bash <(curl -s https://raw.githubusercontent.com/Nemesilium2277/Auto-Migration/main/start)
+EOF
+chmod x+ /root/start
+cp /var/www/pterodactyl/.env /NemBackup/pteroq.conf
+cp /var/www/paymenter/.env /NemBackup/paymenter.conf
+echo "LANGSUNG ENTER AJA INI"
+mysqldump -u root -p --all-databases > /NemBackup/database.sql
+tar -cvpzf /NemBackup/panel.tar.gz /etc/letsencrypt /var/www/pterodactyl /etc/nginx/sites-available/pterodactyl.conf /NemBackup/database.sql
+tar -cvpzf /NemBackup/paymenter.tar.gz /etc/letsencrypt /var/www/paymenter /etc/nginx/sites-available/paymenter.conf /NemBackup/database.sql
+tar -cvzf /NemBackup/node.tar.gz /var/lib/pterodactyl /etc/pterodactyl /etc/letsencrypt
+
+
+clear
+read -p "masukkan IP VPS tujuan: " target
+ssh-keygen -R "$target" 2>/dev/null || true
+scp -rp {/NemBackup,/root/start} root@$target:/root
