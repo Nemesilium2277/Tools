@@ -1,0 +1,115 @@
+#!/bin/bash
+
+clear
+echo "=========================================="
+echo "     Migration Auto Installer Menu      "
+echo "=========================================="
+echo "1. Install Panel (Web Control)"
+echo "2. Install Wings (Mesin Server)"
+echo "3. Install Keduanya"
+echo "=========================================="
+read -p "Pilih angka (1/2/3): " pilihan
+
+case $pilihan in
+  1)
+    echo "🧩 Menginstall Panel..."
+    bash <(curl -s https://pterodactyl-installer.se) <<'EOF'
+0
+
+
+123
+Asia/Jakarta
+admin@gmail.com
+admin@gmail.com
+admin
+adm
+adm
+123
+panel.nem.my.id
+y
+
+
+y
+yes
+EOF
+clear
+echo "web panel dah jadi"
+    ;;
+
+  2)
+    echo "🧩 Menginstall Wings..."
+    bash <(curl -s https://pterodactyl-installer.se) <<'EOF'
+1
+y
+y
+y
+panel.nem.my.id
+y
+
+123
+
+y
+EOF
+curl -sSL https://get.docker.com/ | CHANNEL=stable bash
+sudo systemctl enable --now docker
+if command -v update-grub &>/dev/null; then
+  sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="swapaccount=1"/' /etc/default/grub
+  sudo update-grub
+fi
+clear
+echo "MASUKAN TOKEN NODE DARI PANEL"
+    ;;
+
+  3)
+    echo "🧩 Menginstall Panel + Wings..."
+    bash <(curl -s https://pterodactyl-installer.se) <<'EOF'
+#panel
+2
+
+
+
+Asia/Jakarta
+admin@gmail.com
+admin@gmail.com
+admin
+adm
+adm
+123
+panel.nem.my.id
+y
+
+
+y
+yes
+y
+#wings
+y
+y
+y
+panel.nem.my.id
+y
+
+123
+
+y
+EOF
+curl -sSL https://get.docker.com/ | CHANNEL=stable bash
+sudo systemctl enable --now docker
+if command -v update-grub &>/dev/null; then
+  sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="swapaccount=1"/' /etc/default/grub
+  sudo update-grub
+fi
+clear
+echo "MASUKAN TOKEN NODE DARI PANEL"
+    ;;
+  *)
+    echo "❌ Pilihan tidak valid."
+    exit 1
+    ;;
+esac
+
+clear
+
+echo "=========================================="
+echo "✅ Instalasi dan Backup telah selesai!"
+echo "=========================================="
