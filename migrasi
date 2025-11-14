@@ -4,7 +4,13 @@ set -euo pipefail
 IFS=$'\n\t'
 mkdir -p /NemBackup
 cat <<EOF > /root/start
-bash <(curl -s https://raw.githubusercontent.com/Nemesilium2277/Auto-Migration/main/start)
+mv /root/NemBackup /
+echo "Langs ENTER AJA"
+mysql -u root -p < /NemBackup/database.sql
+tar -xvpzf /NemBackup/panel.tar.gz -C /
+tar -xvpzf /NemBackup/paymenter.tar.gz -C /
+tar -xvzf /NemBackup/node.tar.gz -C /
+
 EOF
 chmod x+ /root/start
 cp /var/www/pterodactyl/.env /NemBackup/pteroq.conf
