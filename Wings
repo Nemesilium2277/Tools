@@ -1,0 +1,27 @@
+    echo "PASTIKAN SUDAH MEMBUAT DNS/FQDN"
+    read -p "Masukkan URL/FQDN Panel" panel
+    read -p "Masukkan URL/FQDN Wings" wings
+    echo "🧩 Menginstall Wings..."
+    bash <(curl -s https://pterodactyl-installer.se) <<'EOF'
+1
+y
+y
+y
+${panel}
+y
+
+123
+y
+${wings}
+y
+admin@gmail.com
+y
+EOF
+curl -sSL https://get.docker.com/ | CHANNEL=stable bash
+sudo systemctl enable --now docker
+if command -v update-grub &>/dev/null; then
+  sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="swapaccount=1"/' /etc/default/grub
+  sudo update-grub
+fi
+clear
+echo "MASUKAN TOKEN NODE DARI PANEL"
